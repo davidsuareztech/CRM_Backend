@@ -2,11 +2,11 @@ package crm.api.crm.domain.services;
 
 import crm.api.crm.domain.dto.CategoriaDto;
 import crm.api.crm.domain.repository.CategoriaRepository;
+import crm.api.crm.exception.CategoriaNotFoundException;
 import crm.api.crm.persistence.entities.CategoriaEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,21 +25,23 @@ public class CategoriaService {
                         .toList();
     }
 
-    public CategoriaDto filtrarPorNombre(String nombre){
-        CategoriaEntity categoria= categoriaRepository.getAll()
-                .stream()
-                .filter(categoriaEntity -> categoriaEntity.getNombre().equalsIgnoreCase(nombre))
-                .findFirst()
-                .orElse(null);
+    public CategoriaDto filtrarPorNombre(String nombre) {
+        CategoriaEntity categoria = categoriaRepository.findByNombre(nombre)
+                .orElseThrow(() ->
+                        new CategoriaNotFoundException(
+                                "No se encontró una categoría con el nombre: " + nombre
+                        )
+                );
         return new CategoriaDto(
                 categoria.getNombre(),
                 categoria.getDescripcion(),
                 categoria.isActivo()
         );
     }
+
     public void turnCategory(UUID id, boolean estado){
         CategoriaEntity categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria No Encontrada"));
+                .orElseThrow(() -> new CategoriaNotFoundException("No se encontró una categoría con el nombre: " + id));
         categoria.actualizarEstado(estado);
         categoriaRepository.save(categoria);
     }
@@ -64,6 +66,10 @@ public class CategoriaService {
                 guardada.getDescripcion(),
                 guardada.isActivo()
         );
+    }
+
+    public void deleate(UUID id){
+        CategoriaEntity eliminada = categoriaRepository.deleteByID(id);
     }
 
 }
