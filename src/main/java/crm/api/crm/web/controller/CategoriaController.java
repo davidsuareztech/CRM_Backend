@@ -1,6 +1,7 @@
 package crm.api.crm.web.controller;
 
 import crm.api.crm.domain.dto.CategoriaDto;
+import crm.api.crm.domain.dto.CategoriaResponseDto;
 import crm.api.crm.domain.services.CategoriaService;
 import crm.api.crm.exception.CategoriaNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,16 @@ public class CategoriaController {
         this.categoriaService=categoriaService;
     }
     @GetMapping("/categorias")
-    public List<CategoriaDto> getAll(){
+    public List<CategoriaResponseDto> getAll(){
         return this.categoriaService.getAll();
     }
     @GetMapping("/categoriasActivas")
-    public List<CategoriaDto> isActive(){
+    public List<CategoriaResponseDto> isActive(){
         return this.categoriaService.isActive();
     }
 
     @GetMapping("/categoria")
-    public CategoriaDto filtrarPorNombre(@RequestParam String nombre){
+    public CategoriaResponseDto filtrarPorNombre(@RequestParam String nombre){
         return categoriaService.filtrarPorNombre(nombre);
     }
 
@@ -38,13 +39,15 @@ public class CategoriaController {
     }
 
     @PostMapping("/categorias")
-    public CategoriaDto create(@RequestBody CategoriaDto categoriaDto) {
+    public CategoriaResponseDto create(
+            @RequestBody CategoriaDto categoriaDto) {
+
         return categoriaService.create(categoriaDto);
     }
 
     @DeleteMapping("/categorias/{id}")
     public void delete(@PathVariable UUID id){
-        categoriaService.deleate(id);
+        categoriaService.delete(id);
     }
 
     @RestControllerAdvice
