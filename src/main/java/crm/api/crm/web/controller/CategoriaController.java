@@ -18,17 +18,21 @@ public class CategoriaController {
         this.categoriaService=categoriaService;
     }
     @GetMapping("/categorias")
-    public List<CategoriaResponseDto> getAll(){
-        return this.categoriaService.getAll();
+    public ResponseEntity<List<CategoriaResponseDto>> getAll(){
+        return ResponseEntity.ok(this.categoriaService.getAll());
     }
     @GetMapping("/categoriasActivas")
-    public List<CategoriaResponseDto> isActive(){
-        return this.categoriaService.isActive();
+    public ResponseEntity<List<CategoriaResponseDto>> isActive(){
+        return ResponseEntity.ok(this.categoriaService.isActive());
     }
 
     @GetMapping("/categoria")
-    public CategoriaResponseDto filtrarPorNombre(@RequestParam String nombre){
-        return categoriaService.filtrarPorNombre(nombre);
+    public ResponseEntity filtrarPorNombre(@RequestParam String nombre){
+        CategoriaResponseDto categoriaResponseDto = this.categoriaService.filtrarPorNombre(nombre);
+        if (categoriaResponseDto == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(categoriaResponseDto);
     }
 
     @PatchMapping("/categorias/{id}/estado")
@@ -39,10 +43,10 @@ public class CategoriaController {
     }
 
     @PostMapping("/categorias")
-    public CategoriaResponseDto create(
+    public ResponseEntity<CategoriaResponseDto> create(
             @RequestBody CategoriaDto categoriaDto) {
-
-        return categoriaService.create(categoriaDto);
+        CategoriaResponseDto categoriaResponse = this.categoriaService.create(categoriaDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaResponse);
     }
 
     @DeleteMapping("/categorias/{id}")

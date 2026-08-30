@@ -27,8 +27,7 @@ public class CategoriaEntity {
     private Timestamp creado_en;
     @Column(
             name = "actualizado_en",
-            nullable = false,
-            insertable = false
+            nullable = false
     )
     private Timestamp actualizado_en;
 

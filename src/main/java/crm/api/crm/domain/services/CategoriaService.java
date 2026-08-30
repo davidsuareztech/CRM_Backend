@@ -77,6 +77,11 @@ public class CategoriaService {
     }
 
     public void delete(UUID id) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new CategoriaNotFoundException(
+                    "No se encontró la categoría con id: " + id
+            );
+        }
         categoriaRepository.deleteByID(id);
     }
 }

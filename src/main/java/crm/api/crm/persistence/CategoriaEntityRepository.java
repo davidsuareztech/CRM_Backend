@@ -43,6 +43,11 @@ public class CategoriaEntityRepository implements CategoriaRepository {
     }
 
     @Override
+    public boolean existsById(UUID id) {
+        return categoriaJpaRepository.existsById(id);
+    }
+
+    @Override
     public CategoriaEntity deleteByID(UUID id){
         categoriaJpaRepository.deleteById(id);
         return null;

@@ -12,4 +12,5 @@ public interface CategoriaRepository {
     Optional<CategoriaEntity> findById(UUID id);
     CategoriaEntity save(CategoriaEntity categoria);
     Optional<CategoriaEntity> findByNombre(String nombre);
+    boolean existsById(UUID id);
 }
