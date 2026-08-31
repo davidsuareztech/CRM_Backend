@@ -16,9 +16,10 @@ import java.util.List;
 )
 public interface ProductoMapper {
 
+
     ProductoDto toDto(ProductoEntity productoEntity);
 
-    @Mapping(target = "id", ignore = true)
+
     @Mapping(target = "categoria", ignore = true)
     ProductoEntity toEntity(CrearProductoDto dto);
 

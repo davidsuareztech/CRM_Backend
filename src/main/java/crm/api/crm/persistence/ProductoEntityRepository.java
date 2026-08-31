@@ -3,6 +3,7 @@ package crm.api.crm.persistence;
 import crm.api.crm.domain.repository.ProductoRepository;
 import crm.api.crm.persistence.crud.ProductoJpaRepository;
 import crm.api.crm.persistence.entities.ProductoEntity;
+import org.springframework.stereotype.Repository;
 
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class ProductoEntityRepository  implements ProductoRepository {
     private final ProductoJpaRepository productoJpaRepository;
     public ProductoEntityRepository(ProductoJpaRepository productoJpaRepository) {
@@ -29,6 +31,8 @@ public class ProductoEntityRepository  implements ProductoRepository {
     public ProductoEntity save(ProductoEntity producto){
         return productoJpaRepository.save(producto);
     }
+    @Override
+    public ProductoEntity update(ProductoEntity producto){return productoJpaRepository.save(producto);}
     @Override
     public ProductoEntity deleteById(UUID id){
         productoJpaRepository.deleteById(id);

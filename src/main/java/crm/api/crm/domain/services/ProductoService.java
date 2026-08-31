@@ -1,6 +1,7 @@
 package crm.api.crm.domain.services;
 
 
+import crm.api.crm.domain.dto.ActualizarProductoDto;
 import crm.api.crm.domain.dto.CrearProductoDto;
 import crm.api.crm.domain.dto.ProductoDto;
 import crm.api.crm.domain.repository.CategoriaRepository;
@@ -10,12 +11,14 @@ import crm.api.crm.exception.ProductoNotFoundException;
 import crm.api.crm.persistence.entities.CategoriaEntity;
 import crm.api.crm.persistence.entities.ProductoEntity;
 import crm.api.crm.persistence.mapper.ProductoMapper;
+import org.springframework.stereotype.Service;
 
 import javax.swing.plaf.PanelUI;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
@@ -76,6 +79,22 @@ public class ProductoService {
             );
         }
         productoRepository.deleteById(id);
+    }
+
+    public ProductoDto actualizar (UUID id, ActualizarProductoDto actualizarProductoDto){
+        ProductoEntity productoEntity = productoRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        CategoriaEntity categoria = categoriaRepository.findById(actualizarProductoDto.id_categoria())
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        productoEntity.setCategoria(categoria);
+        productoEntity.setNombre(actualizarProductoDto.nombre());
+        productoEntity.setDescripcion(actualizarProductoDto.descripcion());
+        productoEntity.setSku(actualizarProductoDto.sku());
+        productoEntity.actualizarEstado(actualizarProductoDto.activo());
+
+        return productoMapper.toDto(
+                productoRepository.save(productoEntity)
+        );
     }
 
     // Búsqueda

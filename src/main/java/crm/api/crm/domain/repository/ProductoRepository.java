@@ -15,6 +15,7 @@ public interface ProductoRepository {
         ProductoEntity save(ProductoEntity producto);
         ProductoEntity deleteById(UUID id);
         boolean existsById(UUID id);
+        ProductoEntity update(ProductoEntity producto);
 
 
         // Búsqueda

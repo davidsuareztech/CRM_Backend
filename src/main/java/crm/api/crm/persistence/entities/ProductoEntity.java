@@ -1,6 +1,8 @@
 package crm.api.crm.persistence.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,13 +28,15 @@ public class ProductoEntity {
     private BigDecimal precio;
     @Column(nullable = false)
     private boolean activo;
+    @CreationTimestamp
     @Column(
             name = "creado_en",
             nullable = false,
-            insertable = false,
             updatable = false
     )
     private Timestamp creadoEn;
+
+    @UpdateTimestamp
     @Column(
             name = "actualizado_en",
             nullable = false
@@ -50,6 +54,9 @@ public class ProductoEntity {
 
     protected ProductoEntity(){}
 
+    public UUID getId(){
+        return id;
+    }
     public CategoriaEntity getCategoria() {
         return categoria;
     }

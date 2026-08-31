@@ -25,4 +25,5 @@ public interface ProductoJpaRepository extends CrudRepository<ProductoEntity, UU
     List<ProductoEntity> findByCategoriaIdAndActivoTrue(UUID idCategoria);
     long countByActivoTrue();
     long countByActivoFalse();
+
 }
